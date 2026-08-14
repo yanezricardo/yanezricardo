@@ -1,0 +1,14 @@
+---
+import Navigation from './Navigation.astro';
+import { siteConfig } from '../config';
+---
+
+<header class="site-header">
+	<div class="container header-inner">
+		<a class="wordmark" href="/" aria-label={`${siteConfig.name}, home`}>
+			<span aria-hidden="true">RY</span>
+			<span>{siteConfig.name}</span>
+		</a>
+		<Navigation />
+	</div>
+</header>

@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config';
+---
+
+<BaseLayout>
+	<section class="hero page-section">
+		<div class="container">
+			<p class="eyebrow">Software architecture / .NET / Engineering leadership</p>
+			<h1>{siteConfig.name}</h1>
+			<p class="role">{siteConfig.title}</p>
+			<p class="statement">{siteConfig.description}</p>
+			<div class="link-row" aria-label="Featured links">
+				<a class="text-link" href="/case-studies/">Case studies</a>
+				<a class="text-link" href="/labs/">Labs</a>
+				<a class="text-link" href={siteConfig.social.github}>GitHub</a>
+				<a class="text-link" href={siteConfig.social.linkedin}>LinkedIn</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="page-section" aria-labelledby="introduction-title">
+		<div class="container intro-grid">
+			<h2 id="introduction-title">What my role actually involves.</h2>
+			<div class="content">
+				<p>
+					On a typical week, I may review a design, trace a production failure, write C#, work
+					through an integration contract, or help a team decide what not to build.
+				</p>
+				<p>
+					Most of that work is in enterprise software: .NET systems, cloud infrastructure,
+					integrations, platform modernization, and practical uses of AI in business processes.
+				</p>
+				<a class="text-link" href="/about/">More about how I work</a>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		padding-block: clamp(5rem, 13vw, 10rem);
+	}
+
+	.hero h1 {
+		max-width: 11ch;
+	}
+
+	.role {
+		margin-top: 1.75rem;
+		color: var(--muted);
+		font-family: 'SFMono-Regular', Consolas, monospace;
+		font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+	}
+
+	.statement {
+		max-width: 45rem;
+		margin-top: 3rem;
+		font-size: clamp(1.45rem, 3.5vw, 2.4rem);
+		font-weight: 520;
+		line-height: 1.3;
+		letter-spacing: -0.025em;
+		text-wrap: balance;
+	}
+
+	.intro-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		gap: clamp(3rem, 8vw, 8rem);
+	}
+
+	@media (max-width: 44rem) {
+		.intro-grid {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+	}
+</style>

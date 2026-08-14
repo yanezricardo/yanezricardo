@@ -1,0 +1,59 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import TagList from '../../components/TagList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+	const entries = await getCollection('caseStudies', ({ data }) => data.status === 'published');
+
+	return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+interface Props {
+	entry: CollectionEntry<'caseStudies'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+	title={entry.data.title}
+	description={entry.data.description}
+	canonicalPath={`/case-studies/${entry.id}/`}
+	type="article"
+>
+	<article>
+		<header class="page-section case-header">
+			<div class="container">
+				<a class="back-link" href="/case-studies/">← All case studies</a>
+				<p class="eyebrow">Case study</p>
+				<h1>{entry.data.title}</h1>
+				<p class="lede">{entry.data.description}</p>
+				<TagList tags={entry.data.tags} />
+			</div>
+		</header>
+		<div class="page-section">
+			<div class="container content">
+				<Content />
+			</div>
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.case-header h1 {
+		max-width: 13ch;
+	}
+
+	.case-header .tag-list {
+		margin-top: 2rem;
+	}
+
+	.back-link {
+		display: inline-block;
+		margin-bottom: 3rem;
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+</style>

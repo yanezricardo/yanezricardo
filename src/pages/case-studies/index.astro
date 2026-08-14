@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const caseStudies = (
+	await getCollection('caseStudies', ({ data }) => data.status === 'published')
+).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+---
+
+<BaseLayout
+	title="Case studies"
+	description="Anonymized engineering case studies focused on context, constraints, decisions, and lessons learned."
+>
+	<section class="page-section">
+		<div class="container">
+			<p class="eyebrow">Case studies</p>
+			<h1>Decisions under real constraints.</h1>
+			<p class="lede">
+				A closer look at the architecture work behind the systems: the trade-offs, failed paths, and
+				evidence that shaped the final decision. Names and sensitive operational details are
+				omitted, but the engineering is real.
+			</p>
+		</div>
+	</section>
+
+	<section class="page-section" aria-labelledby="cases-title">
+		<div class="container">
+			<h2 id="cases-title">Selected work</h2>
+			<div class="grid">
+				{caseStudies.map((entry) => <CaseStudyCard entry={entry} />)}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	h1 {
+		max-width: 14ch;
+	}
+</style>

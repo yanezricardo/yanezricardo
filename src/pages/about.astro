@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="About"
+	description="How Ricardo Yanez approaches software engineering, architecture, and engineering leadership."
+>
+	<section class="page-section">
+		<div class="container">
+			<p class="eyebrow">About</p>
+			<h1>I never really stopped being a software engineer.</h1>
+			<p class="lede">
+				My responsibilities grew from implementing software to shaping systems, technical direction,
+				and engineering work. The hands-on part never disappeared.
+			</p>
+		</div>
+	</section>
+
+	<section class="page-section" aria-labelledby="path-title">
+		<div class="container">
+			<h2 id="path-title">A widening scope</h2>
+			<ol class="career-path">
+				<li><span>Software Engineer</span></li>
+				<li><span>Senior Software Engineer</span></li>
+				<li><span>Software Architect</span></li>
+				<li><span>Lead Software Engineer</span></li>
+			</ol>
+		</div>
+	</section>
+
+	<section class="page-section" aria-labelledby="practice-title">
+		<div class="container two-column">
+			<div>
+				<p class="eyebrow">The work today</p>
+				<h2 id="practice-title">What changed, and what did not.</h2>
+			</div>
+			<div class="content">
+				<p>
+					Over time, I took on more responsibility for architecture, technical decisions, system
+					design, mentoring, development coordination, infrastructure, and operation.
+				</p>
+				<p>
+					I still write and review code, investigate failures, design solutions, and build proofs of
+					concept. Staying close to implementation keeps my decisions tied to the system the team
+					actually has to maintain.
+				</p>
+				<p>
+					I am most interested in the decisions that survive contact with production: clear
+					boundaries, explicit trade-offs, useful diagnostics, and changes that another engineer can
+					understand later.
+				</p>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	h1 {
+		max-width: 13ch;
+	}
+
+	.career-path {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		margin: 3rem 0 0;
+		padding: 0;
+		list-style: none;
+		counter-reset: career;
+	}
+
+	.career-path li {
+		position: relative;
+		padding: 3rem 1.25rem 0 0;
+		border-top: 1px solid var(--line);
+		counter-increment: career;
+	}
+
+	.career-path li::before {
+		position: absolute;
+		top: -0.65rem;
+		left: 0;
+		padding-right: 0.75rem;
+		background: var(--background);
+		color: var(--accent);
+		content: '0' counter(career);
+		font-family: 'SFMono-Regular', Consolas, monospace;
+		font-size: 0.8rem;
+	}
+
+	.career-path span {
+		display: block;
+		max-width: 12rem;
+		font-weight: 620;
+		line-height: 1.35;
+	}
+
+	.two-column {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		gap: clamp(3rem, 8vw, 8rem);
+	}
+
+	@media (max-width: 44rem) {
+		.career-path {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.two-column {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

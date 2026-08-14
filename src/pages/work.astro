@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const areas = [
+	{
+		title: 'Software Architecture',
+		description: 'Boundaries, trade-offs, and decisions that a team can still explain later.',
+	},
+	{
+		title: 'Backend Engineering',
+		description: 'Business workflows and APIs in .NET, usually close to data and integrations.',
+	},
+	{
+		title: 'Distributed Systems',
+		description: 'The parts where failures, retries, consistency, and ownership matter.',
+	},
+	{
+		title: 'Cloud Architecture',
+		description: 'AWS, containers, infrastructure as code, CI/CD, and gradual modernization.',
+	},
+	{
+		title: 'Identity & Access',
+		description: 'Authentication, authorization, sessions, SSO, and who should trust whom.',
+	},
+	{
+		title: 'Enterprise Integration',
+		description: 'Contracts and adapters that have to coexist with real legacy constraints.',
+	},
+	{
+		title: 'Observability & Operation',
+		description: 'Enough evidence to understand what the software is doing in production.',
+	},
+	{
+		title: 'Applied AI',
+		description:
+			'LLM integrations where validation, auditability, confidentiality, and cost matter.',
+	},
+];
+---
+
+<BaseLayout
+	title="Work"
+	description="The engineering domains in which Ricardo Yanez designs systems, writes code, and leads delivery."
+>
+	<section class="page-section">
+		<div class="container">
+			<p class="eyebrow">Work</p>
+			<h1>The work I tend to be responsible for.</h1>
+			<p class="lede">
+				I do not separate architecture from delivery. These are the areas where I usually move
+				between design, implementation, review, and production diagnosis.
+			</p>
+		</div>
+	</section>
+
+	<section class="page-section" aria-labelledby="areas-title">
+		<div class="container">
+			<h2 id="areas-title">Engineering domains</h2>
+			<div class="areas">
+				{
+					areas.map(({ title, description }) => (
+						<article>
+							<h3>{title}</h3>
+							<p>{description}</p>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="page-section" aria-labelledby="principle-title">
+		<div class="container principle">
+			<p class="eyebrow">Working principle</p>
+			<h2 id="principle-title">
+				I prefer the smallest design that protects the business and leaves the next change
+				understandable.
+			</h2>
+			<a class="text-link" href="/case-studies/">See the case study structure</a>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	h1 {
+		max-width: 15ch;
+	}
+
+	.areas {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		margin-top: 3rem;
+		border-top: 1px solid var(--line);
+		border-left: 1px solid var(--line);
+	}
+
+	.areas article {
+		min-height: 12rem;
+		padding: 1.5rem;
+		border-right: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.areas h3 {
+		margin-top: 0;
+	}
+
+	.areas article > p:last-child {
+		max-width: 31rem;
+		margin-top: 0.75rem;
+		color: var(--muted);
+	}
+
+	.principle h2 {
+		max-width: 19ch;
+	}
+
+	.principle .text-link {
+		margin-top: 2rem;
+	}
+
+	@media (max-width: 40rem) {
+		.areas {
+			grid-template-columns: 1fr;
+		}
+
+		.areas article {
+			min-height: auto;
+		}
+	}
+</style>
