@@ -1,17 +1,23 @@
-# 👋 Hi, I’m @yanezricardo
+# Ricardo Yanez
 
-I'm a Senior .NET Developer with over 18 years of experience in software engineering. I specialize in building high-quality web applications using .NET Core and have a deep understanding of the entire software development lifecycle. My expertise includes designing scalable solutions, writing clean code, and ensuring maintainability.
+**Lead Software Engineer · Software Architect**
 
-### 🌱 Continuous Learning
-I'm committed to staying up-to-date with the latest technologies in the .NET ecosystem, with a current focus on Blazor and modern web development frameworks.
+I design systems, make architecture decisions, lead engineering work, and still write code.
 
-### 💼 Collaboration & Mentorship
-I'm always open to collaborating on challenging .NET projects and enjoy mentoring junior developers, sharing knowledge to help build the next generation of tech professionals.
+Most of my work is in enterprise software: .NET platforms, distributed systems, cloud infrastructure, integrations, identity, and practical uses of AI. I tend to move between design, implementation, review, and production diagnosis rather than treating architecture as a separate activity.
 
-### 📫 Contact Me
-Feel free to reach out via email at **yanezricardo@gmail.com** or connect with me on [LinkedIn](https://www.linkedin.com/in/yanezricardo).
+## What I work on
 
-<!---
-yanezricardo/yanezricardo is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+- Software architecture and technical direction
+- Backend engineering with .NET and PostgreSQL
+- Distributed systems, integrations, and asynchronous workflows
+- AWS, containers, infrastructure as code, and CI/CD
+- Authentication, authorization, and trust boundaries
+- Applied AI with validation, auditability, and operational controls
+
+## Selected work
+
+- [Making an AI Integration Portable](https://yanezricardo.dev/case-studies/ai-platform/)
+- [Taking a Data Refresh Out of the API](https://yanezricardo.dev/case-studies/data-refresh-control-plane/)
+
+[Portfolio](https://yanezricardo.dev) · [LinkedIn](https://www.linkedin.com/in/yanezricardo) · [Email](mailto:yanezricardo@gmail.com)
