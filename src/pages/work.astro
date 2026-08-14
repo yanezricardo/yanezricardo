@@ -3,37 +3,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const areas = [
 	{
-		title: 'Software Architecture',
-		description: 'Boundaries, trade-offs, and decisions that a team can still explain later.',
+		title: 'Architecture & Technical Direction',
+		description:
+			'I define boundaries and contracts, then stay involved when implementation puts those decisions under pressure.',
 	},
 	{
-		title: 'Backend Engineering',
-		description: 'Business workflows and APIs in .NET, usually close to data and integrations.',
+		title: 'Backend Systems',
+		description:
+			'Most of the code I write is C# around business workflows, APIs, persistence, and integrations.',
 	},
 	{
-		title: 'Distributed Systems',
-		description: 'The parts where failures, retries, consistency, and ownership matter.',
+		title: 'Distributed Systems & Integration',
+		description:
+			'I work on queues, contracts, retries, ownership, and the awkward edges where systems fail independently.',
 	},
 	{
-		title: 'Cloud Architecture',
-		description: 'AWS, containers, infrastructure as code, CI/CD, and gradual modernization.',
+		title: 'Cloud Delivery & Production',
+		description:
+			'AWS, containers, infrastructure as code, delivery pipelines, and diagnosing what actually happened in production.',
 	},
 	{
 		title: 'Identity & Access',
-		description: 'Authentication, authorization, sessions, SSO, and who should trust whom.',
-	},
-	{
-		title: 'Enterprise Integration',
-		description: 'Contracts and adapters that have to coexist with real legacy constraints.',
-	},
-	{
-		title: 'Observability & Operation',
-		description: 'Enough evidence to understand what the software is doing in production.',
+		description:
+			'Authentication, authorization, sessions, SSO, and deciding which component is allowed to trust which identity.',
 	},
 	{
 		title: 'Applied AI',
 		description:
-			'LLM integrations where validation, auditability, confidentiality, and cost matter.',
+			'I use models where they add value, while keeping validation, confidentiality, cost, and business effects outside them.',
 	},
 ];
 ---
@@ -45,7 +42,7 @@ const areas = [
 	<section class="page-section">
 		<div class="container">
 			<p class="eyebrow">Work</p>
-			<h1>The work I tend to be responsible for.</h1>
+			<h1>Where I usually get involved.</h1>
 			<p class="lede">
 				I do not separate architecture from delivery. These are the areas where I usually move
 				between design, implementation, review, and production diagnosis.
@@ -55,7 +52,7 @@ const areas = [
 
 	<section class="page-section" aria-labelledby="areas-title">
 		<div class="container">
-			<h2 id="areas-title">Engineering domains</h2>
+			<h2 id="areas-title">The recurring parts of the job</h2>
 			<div class="areas">
 				{
 					areas.map(({ title, description }) => (

@@ -8,7 +8,7 @@ const caseStudies = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		date: z.coerce.date().optional(),
-		status: z.enum(['placeholder', 'draft', 'published']).default('placeholder'),
+		status: z.enum(['draft', 'published']).default('draft'),
 		tags: z.array(z.string()).default([]),
 		featured: z.boolean().default(false),
 	}),
@@ -28,15 +28,4 @@ const labs = defineCollection({
 	}),
 });
 
-const notes = defineCollection({
-	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notes' }),
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		date: z.coerce.date().optional(),
-		tags: z.array(z.string()).default([]),
-		draft: z.boolean().default(true),
-	}),
-});
-
-export const collections = { caseStudies, labs, notes };
+export const collections = { caseStudies, labs };

@@ -73,33 +73,30 @@ At most one request can be active in an environment. A queue may deliver a messa
 
 ## Implementation
 
-I split the work into independently reviewable slices:
+I delivered the change in five stages:
 
-1. Added the request lifecycle, database constraints, lease, heartbeat, deadlines, and per-contract audit using real database integration tests.
-2. Restricted the production worker to a request identifier and a versioned manifest. Free-form operational arguments remained outside the governed path.
-3. Persisted the request and outbox message in one transaction so an accepted HTTP response could not lose its dispatch intent.
-4. Added bounded dispatch retries and separate monitors for publication failure, task-start timeout, lease loss, and maximum runtime.
-5. Made lease loss cooperative: a worker that no longer owns the request stops at the next safe boundary instead of overwriting a newer owner.
-6. Defined the queue, dead-letter queue, task, logs, secrets metadata, least-privilege roles, and alarms as infrastructure as code.
-7. Published immutable container images and required a known rollback image before enabling dispatch.
-8. Added an administrative UI for current state, freshness, contract results, and history without exposing task identifiers, leases, or infrastructure details.
+1. Built the request lifecycle, database constraints, lease, heartbeat, deadlines, and per-contract audit using integration tests against a real database.
+2. Stored the request and outbox message in one transaction, closing the gap between accepting work and remembering that it had to be dispatched.
+3. Restricted the worker to a request identifier and a versioned manifest. It resolved trusted configuration on the server and stopped at the next safe boundary if it lost the lease.
+4. Defined the queue, dead-letter queue, task, logs, roles, alarms, dispatch retries, and timeout monitors as infrastructure as code. Container images were immutable, and activation required a known rollback image.
+5. Added an administrative view of current state, freshness, contract results, and history. Task identifiers, lease details, and infrastructure configuration stayed out of the browser.
 
-The delivery flag started disabled. Code, infrastructure, credentials, deployment, activation, and the first production execution were separate checkpoints. Each could be reviewed or rolled back without pretending the next one had already been authorized.
+The delivery flag started disabled. I treated code, infrastructure, credentials, deployment, activation, and the first production execution as separate checkpoints. Completing one did not authorize the next.
 
 ## Outcome
 
 A controlled rollout completed the approved data contracts successfully and produced the expected operational evidence. The UI showed the request from acceptance through its terminal result and retained an auditable history.
 
-The API remained a responsive control plane, while the data workload ran in an isolated, short-lived container with narrowly scoped permissions. A duplicate delivery could no longer create two owners, and a process that lost its lease could not continue writing as if it were still authoritative.
+The API continued serving normal requests while the data workload ran in an isolated, short-lived container with narrowly scoped permissions. Duplicate delivery could no longer create two owners, and a process that lost its lease could not keep writing as the owner.
 
-Failure modes such as duplicate delivery, dead-letter handling, forced interruption, and lease expiry were treated as separate controlled checkpoints rather than inferred from one successful run. That boundary remained explicit in the operational evidence.
+Duplicate delivery, dead-letter handling, forced interruption, and lease expiry each had their own controlled checkpoint. One successful execution was evidence for that path, not for every failure mode.
 
 ## What I learned
 
 Idempotency and mutual exclusion solve different problems. Safe repeated writes do not make concurrent execution free or operationally acceptable.
 
-An outbox is valuable here because it preserves intent, not because it promises exactly-once delivery. The request identity and atomic claim make at-least-once delivery manageable.
+The outbox preserves intent between the database commit and queue publication. It does not provide exactly-once delivery; request identity and the atomic claim make repeated delivery manageable.
 
 Long-running work needs an explicit owner, lease, deadline, and terminal state. A process being absent is not a useful status.
 
-Finally, production readiness is a sequence of evidence and permissions. Keeping code delivery, infrastructure changes, activation, smoke testing, and failure injection as separate gates made the rollout slower—but much safer and easier to reverse.
+Production readiness was not a single checkbox. Treating code delivery, infrastructure, activation, smoke testing, and failure injection as separate decisions made the rollout slower, but also easier to understand and reverse.
