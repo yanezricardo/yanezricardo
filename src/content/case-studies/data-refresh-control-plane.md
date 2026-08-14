@@ -88,11 +88,11 @@ The delivery flag started disabled. Code, infrastructure, credentials, deploymen
 
 ## Outcome
 
-The controlled production run completed every approved data contract successfully. The expected records were processed, freshness advanced, the worker exited cleanly, the queues drained, and the relevant alarms remained healthy. The UI showed the request from acceptance through its terminal result and retained an auditable history.
+A controlled rollout completed the approved data contracts successfully and produced the expected operational evidence. The UI showed the request from acceptance through its terminal result and retained an auditable history.
 
 The API remained a responsive control plane, while the data workload ran in an isolated, short-lived container with narrowly scoped permissions. A duplicate delivery could no longer create two owners, and a process that lost its lease could not continue writing as if it were still authoritative.
 
-The successful path did not close every operational question. Controlled tests for duplicate delivery, dead-letter handling, forced interruption, and lease expiry were deliberately left as separate production checkpoints. I recorded that boundary instead of treating one successful run as proof of every failure mode.
+Failure modes such as duplicate delivery, dead-letter handling, forced interruption, and lease expiry were treated as separate controlled checkpoints rather than inferred from one successful run. That boundary remained explicit in the operational evidence.
 
 ## What I learned
 

@@ -20,4 +20,4 @@ Most of my work is in enterprise software: .NET platforms, distributed systems, 
 - [Making an AI Integration Portable](https://yanezricardo.dev/case-studies/ai-platform/)
 - [Taking a Data Refresh Out of the API](https://yanezricardo.dev/case-studies/data-refresh-control-plane/)
 
-[Portfolio](https://yanezricardo.dev) · [LinkedIn](https://www.linkedin.com/in/yanezricardo) · [Email](mailto:yanezricardo@gmail.com)
+[Portfolio](https://yanezricardo.dev) · [LinkedIn](https://www.linkedin.com/in/yanezricardo)

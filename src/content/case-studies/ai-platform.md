@@ -24,12 +24,12 @@ The task was not simply to call another model. I needed to make the integration 
 
 - business semantics and validation remained in the application;
 - conversation state stayed isolated and owned by the product;
-- generated SQL remained read-only and constrained to an approved reporting surface;
+- model-produced plans remained constrained to approved, read-only reporting capabilities;
 - synchronous and streaming endpoints kept equivalent behavior;
 - failures and model usage remained attributable without recording prompts, answers, business values, or personal data;
 - rollout and rollback stayed explicit.
 
-The first pilot proved that a neutral interface was possible, but it did not prove real portability. Its preferred transport also failed an operational gate in the target environment, so the candidate was rolled back instead of being promoted on architectural optimism.
+The first pilot proved that a neutral interface was possible, but it did not prove real portability. Candidate integrations still had to pass the same operational gates before promotion; architectural compatibility alone was insufficient.
 
 ## Options considered
 
@@ -80,7 +80,7 @@ The result was a reusable AI integration boundary that proved portability in a r
 - Provider-specific types stayed behind adapters.
 - Structured output, hard timeouts, normalized errors, and technical telemetry became shared behavior.
 - Deterministic and model-assisted paths continued to coexist, allowing the cheaper and more predictable path to win when it was sufficient.
-- Rollout decisions remained separate from technical certification: a compatible profile was not automatically authorized for production data or traffic.
+- Rollout decisions remained separate from technical certification: a compatible profile was not automatically authorized for a deployment.
 
 Not every evaluated candidate was promoted. Some were rejected for operational fit, quality, latency, cost, or data-governance constraints. That was part of the result, not a failure of the platform: the architecture made those decisions comparable and reversible.
 
