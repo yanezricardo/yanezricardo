@@ -12,84 +12,61 @@ featured: true
 
 > The organization, product, providers, models, and operational identifiers have been intentionally omitted. The architecture and lessons are real; sensitive implementation details are not.
 
-## Context
+## The situation
 
-I was leading the architecture and implementation of an enterprise analytics product that turns natural-language questions into governed queries. Most questions could follow deterministic paths, but some needed semantic interpretation before the application could build a safe query plan.
+I was working on an enterprise analytics product that turns natural-language questions into governed query plans. Many questions followed deterministic paths. Others needed semantic interpretation before the application could decide what to query.
 
-The existing model integration worked, but the application knew too much about its transport. Replacing a provider—or even changing the API used to reach the same model—risked touching application configuration and operational code. That was the wrong boundary for a capability we expected to evaluate and evolve.
+The first model integration worked, but provider and transport details had spread into application configuration and operational code. Changing how the model was reached meant changing the product as well. That coupling made every evaluation more expensive than it needed to be.
 
-## The problem
+## What had to stay true
 
-The task was not simply to call another model. I needed to make the integration portable while preserving the parts that made the product trustworthy:
+Portability could not weaken the controls already built into the product. Business semantics and validation still belonged in the application. Conversation state had to stay isolated. Model-produced plans could only use approved, read-only reporting capabilities. Streaming and synchronous endpoints needed to agree, and telemetry could not record prompts, answers, business values, or personal data.
 
-- business semantics and validation remained in the application;
-- conversation state stayed isolated and owned by the product;
-- model-produced plans remained constrained to approved, read-only reporting capabilities;
-- synchronous and streaming endpoints kept equivalent behavior;
-- failures and model usage remained attributable without recording prompts, answers, business values, or personal data;
-- rollout and rollback stayed explicit.
+Those constraints mattered more than supporting another SDK.
 
-The first pilot proved that a neutral interface was possible, but it did not prove real portability. Candidate integrations still had to pass the same operational gates before promotion; architectural compatibility alone was insufficient.
+## Choosing the boundary
 
-## Options considered
+Keeping provider clients inside the application was the quickest option, but it would repeat authentication, timeout handling, error mapping, structured output, and telemetry for each integration.
 
-### Keep provider clients inside the application
+I also considered a central AI gateway. There was no measured reason to add another service or network hop, and the contract was still too young to generalize across unrelated products.
 
-This had the lowest short-term cost, but every new provider would duplicate authentication, timeouts, error mapping, structured-output handling, and telemetry. It would also make provider details part of the product's architecture.
+I chose a smaller boundary: a typed capability contract with provider adapters behind it. The application selects a versioned profile; the runtime resolves the provider, transport, model, and supported capabilities.
 
-### Build a universal AI gateway
-
-A central gateway looked attractive on paper, but there was no measured need for another network hop or a new operational service. It would have widened the project before the contract was understood.
-
-### Introduce a small, provider-neutral runtime
-
-The selected approach separated a stable capability contract from provider adapters. The product selected a certified profile; the runtime resolved the provider, transport, model, and supported capabilities behind that identifier.
-
-This was the smallest design that addressed the actual problem without pretending every future AI use case had already been discovered.
-
-## Decision
-
-I used one rule to keep the boundary honest:
+One rule kept responsibilities clear:
 
 > The model proposes; the application decides.
 
-The shared runtime owns transport concerns: authentication, hard timeouts, structured-output mechanics, normalized failures, bounded retries, and technical metadata. The analytics product still owns prompts, semantic vocabulary, conversation state, functional validation, query planning, SQL safety, and every business effect.
+The runtime handles authentication, hard timeouts, structured-output mechanics, retries, provider failures, and technical metadata. The product owns the prompt, vocabulary, conversation, functional validation, query planning, safety rules, and every business effect.
 
-The application chooses only a versioned profile identifier. It does not branch on provider SDKs or API families. Technical details remain observable, but they do not leak into the application contract.
+## How I implemented it
 
-## Implementation
+### Contract before adapters
 
-I delivered the change in evidence-driven slices:
+I started with a minimal typed response and a closed set of capabilities. Contract tests came before provider adapters, which kept SDK behavior from defining the application interface by accident.
 
-1. Defined a minimal typed contract for structured output and a closed set of capabilities.
-2. Added contract tests before implementing provider adapters.
-3. Reused the existing prompt, payload, schema, and domain validators so comparisons measured transport and model behavior—not simultaneous product changes.
-4. Treated every model response as untrusted input and rejected output that failed structural or functional validation.
-5. Preserved a high-precision deterministic path for questions that did not need a model.
-6. Added explicit failure categories for timeout, authentication, provider failure, and invalid output instead of hiding them behind fallback values.
-7. Recorded bounded technical metadata—profile, versions, attempts, latency, token usage, and outcome—without persisting prompt content or business data.
-8. Verified parity between synchronous and streaming paths, conversation isolation, safe failure behavior, and the absence of hidden fallback.
+### Responses were still untrusted input
 
-When the first candidate failed an environment permission gate, I rolled it back and kept the evidence. The next iteration compared multiple certified transports and providers using the same use case, prompt, schema, planner, and validators. Changing provider became a configuration decision rather than an application rewrite.
+Every response passed structural and functional validation before the planner could use it. Invalid output produced a specific failure instead of a fallback value. Questions that already had a precise deterministic path continued to use it.
 
-## Outcome
+### Comparable evaluations
 
-The result was a reusable AI integration boundary that proved portability in a real consumer, not only in an SDK test project.
+Provider candidates used the same use case, prompt, schema, planner, and validators. I recorded the profile, component versions, attempts, latency, token usage, and outcome, but not the prompt or business data. This made differences attributable without turning the telemetry store into a copy of the conversation.
 
-- The analytics application could move between certified profiles without changing its business or application layers.
-- Provider-specific types stayed behind adapters.
-- Structured output, hard timeouts, normalized errors, and technical telemetry became shared behavior.
-- Deterministic and model-assisted paths continued to coexist, allowing the cheaper and more predictable path to win when it was sufficient.
-- Rollout decisions remained separate from technical certification: a compatible profile was not automatically authorized for a deployment.
+Technical compatibility did not authorize a rollout. Each candidate still had to meet the deployment's requirements for credentials, data treatment, quality, latency, and cost.
 
-Not every evaluated candidate was promoted. Some were rejected for operational fit, quality, latency, cost, or data-governance constraints. That was part of the result, not a failure of the platform: the architecture made those decisions comparable and reversible.
+## Result
 
-## What I learned
+- The analytics product could change certified profiles without changing its application or business layers.
+- Provider SDK types stayed inside their adapters.
+- Structured output, timeouts, errors, and technical telemetry behaved consistently across integrations.
+- Deterministic and model-assisted paths continued to coexist, so a model was used only when it added value.
 
-Provider neutrality is not achieved by renaming vendor types. It is proven when a real application changes provider without changing its semantics, validation, or business workflow.
+The boundary was tested inside the product that needed it; an isolated SDK project would not have been enough.
 
-Structured output narrows uncertainty, but it does not make model output trustworthy. Local validation remains the authority.
+## Lessons
 
-Retries are not invisible resilience for probabilistic systems. They consume latency and budget and may produce a different answer, so they need explicit limits and attribution.
+Renaming vendor types does not create provider neutrality. A real application has to change provider without changing its semantics, validation, or workflow.
 
-Finally, technical certification and production approval are different decisions. Compatibility belongs to the platform; data treatment, credentials, budget, and rollout belong to each deployment.
+Structured output makes responses easier to validate; it does not make them trustworthy. The application still has the final say.
+
+Retries also deserve product scrutiny. They consume time and money and can return a different answer. I treat their limits and attribution as part of product behavior.

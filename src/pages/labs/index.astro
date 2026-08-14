@@ -10,15 +10,15 @@ const labs = (await getCollection('labs', ({ data }) => !data.draft)).sort(
 
 <BaseLayout
 	title="Labs"
-	description="Experiments, proofs of concept, tools, and small products by Ricardo Yanez."
+	description="Open-source software and experiments maintained by Ricardo Yanez."
 >
 	<section class="page-section">
 		<div class="container">
 			<p class="eyebrow">Labs</p>
-			<h1>Things I build outside day-to-day work.</h1>
+			<h1>Software I maintain in public.</h1>
 			<p class="lede">
-				Some become small SaaS products. Others stop at a proof of concept or a useful tool. I will
-				add them here when there is something concrete and public to show.
+				Open-source libraries, small tools, and experiments. Each entry links to something you can
+				use or inspect.
 			</p>
 		</div>
 	</section>
@@ -26,22 +26,9 @@ const labs = (await getCollection('labs', ({ data }) => !data.draft)).sort(
 	<section class="page-section" aria-labelledby="projects-title">
 		<div class="container">
 			<h2 id="projects-title">Projects</h2>
-			{
-				labs.length > 0 ? (
-					<div class="grid">
-						{labs.map((entry) => (
-							<LabCard entry={entry} />
-						))}
-					</div>
-				) : (
-					<div class="empty-state">
-						<p>Nothing public here yet.</p>
-						<p>
-							I prefer leaving this empty to filling it with projects that are not ready to explain.
-						</p>
-					</div>
-				)
-			}
+			<div class="grid">
+				{labs.map((entry) => <LabCard entry={entry} />)}
+			</div>
 		</div>
 	</section>
 </BaseLayout>
@@ -49,18 +36,5 @@ const labs = (await getCollection('labs', ({ data }) => !data.draft)).sort(
 <style>
 	h1 {
 		max-width: 14ch;
-	}
-
-	.empty-state {
-		max-width: 42rem;
-		margin-top: 2.5rem;
-		padding: 1.5rem;
-		border-left: 3px solid var(--accent);
-		background: var(--surface);
-		color: var(--muted);
-	}
-
-	.empty-state p + p {
-		margin-top: 0.5rem;
 	}
 </style>
