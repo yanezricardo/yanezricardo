@@ -10,7 +10,14 @@ lockfile. Lifecycle scripts, Git dependencies, and direct URL dependencies are
 blocked by `.npmrc`. Do not override these settings to make an install pass.
 
 New version resolution waits seven days; this does not re-age versions already
-accepted in the lockfile. Dependabot also waits seven days for ordinary updates.
+accepted in the lockfile. Dependabot checks ordinary updates monthly after a seven-day cooldown.
+Minor and patch releases are grouped separately for site dependencies, development
+tools, and Actions. At most two npm and one Actions version-update PRs stay open.
+Major releases remain separate proposals and need an explicit compatibility and
+benefit review; being newer alone is not a reason to merge. These groups apply
+only to version updates, and the PR limits do not apply to security updates.
+Security updates and alerts remain enabled, without a blanket major-version
+ignore rule that could hide a necessary fix.
 Review every lockfile change, including new transitive dependencies, sources,
 install scripts, and unexpected publisher or provenance changes. A lockfile
 preserves an accepted package; it cannot make a malicious package safe.
