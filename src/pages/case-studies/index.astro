@@ -28,7 +28,9 @@ const caseStudies = (
 		<div class="container">
 			<h2 id="cases-title">Selected work</h2>
 			<div class="grid">
-				{caseStudies.map((entry) => <CaseStudyCard entry={entry} />)}
+				{caseStudies.map((entry) => (
+					<CaseStudyCard entry={entry} />
+				))}
 			</div>
 		</div>
 	</section>

@@ -54,14 +54,12 @@ const areas = [
 		<div class="container">
 			<h2 id="areas-title">The recurring parts of the job</h2>
 			<div class="areas">
-				{
-					areas.map(({ title, description }) => (
-						<article>
-							<h3>{title}</h3>
-							<p>{description}</p>
-						</article>
-					))
-				}
+				{areas.map(({ title, description }) => (
+					<article>
+						<h3>{title}</h3>
+						<p>{description}</p>
+					</article>
+				))}
 			</div>
 		</div>
 	</section>
@@ -73,7 +71,9 @@ const areas = [
 				I prefer the smallest design that protects the business and leaves the next change
 				understandable.
 			</h2>
-			<a class="text-link" href="/case-studies/">See the case study structure</a>
+			<a class="text-link" href="/case-studies/">
+				See the case study structure
+			</a>
 		</div>
 	</section>
 </BaseLayout>
